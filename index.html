@@ -1,0 +1,804 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Christmas Tree | SJC</title>
+
+<style>
+:root {
+  --green: #103d30;
+  --gold: #f6d77a;
+  --red: #b72e42;
+  --cream: #fff8e9;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--cream);
+  font-family: Arial, sans-serif;
+  background: radial-gradient(ellipse at top, #245744, #102f28 60%, #071b18);
+}
+
+header {
+  text-align: center;
+  padding: 24px 12px 14px;
+}
+
+.logo {
+  width: 55px;
+  height: 55px;
+  margin: auto;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  color: var(--gold);
+  font-weight: bold;
+  font-size: 20px;
+}
+
+h1 {
+  margin: 12px 0 6px;
+  color: var(--gold);
+  font-family: Georgia, serif;
+  font-size: clamp(28px, 5vw, 42px);
+}
+
+.subtitle {
+  color: #d8e5d9;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 12px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.panel {
+  padding: 18px;
+  min-width: 0;
+  border: 1px solid #f6d77a40;
+  border-radius: 18px;
+  background: #ffffff0c;
+  box-shadow: 0 10px 30px #0002;
+}
+
+h2, h3 { color: var(--gold); }
+h2 { font-size: 20px; margin-top: 0; }
+h3 { font-size: 16px; margin: 22px 0 12px; }
+
+.tree-wrap {
+  width: min(100%, 420px);
+  aspect-ratio: 4 / 5;
+  margin: 12px auto;
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: radial-gradient(ellipse at 50% 80%, #f6d77a18, transparent 60%);
+}
+
+#tree {
+  position: absolute;
+  inset: 0;
+  cursor: crosshair;
+}
+
+.star {
+  position: absolute;
+  top: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  font-size: 46px;
+  color: #ffe477;
+  text-shadow: 0 0 12px #ffdf60, 0 0 28px #ffcb43;
+  animation: glow 1.5s infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes glow {
+  to { filter: brightness(1.35); }
+}
+
+.layer {
+  position: absolute;
+  left: 50%;
+  height: 0;
+  transform: translateX(-50%);
+  border-left: solid transparent;
+  border-right: solid transparent;
+  pointer-events: none;
+}
+
+.layer1 {
+  top: 14%;
+  border-left-width: 65px;
+  border-right-width: 65px;
+  border-bottom: 100px solid #28764d;
+}
+
+.layer2 {
+  top: 29%;
+  border-left-width: 100px;
+  border-right-width: 100px;
+  border-bottom: 130px solid #1c603e;
+}
+
+.layer3 {
+  top: 46%;
+  border-left-width: 135px;
+  border-right-width: 135px;
+  border-bottom: 150px solid #164b34;
+}
+
+.trunk {
+  position: absolute;
+  top: 78%;
+  left: 50%;
+  width: 34px;
+  height: 48px;
+  transform: translateX(-50%);
+  background: #87512e;
+  pointer-events: none;
+}
+
+.decoration {
+  position: absolute;
+  z-index: 5;
+  transform: translate(-50%, -50%);
+  padding: 2px;
+  border: 0;
+  background: transparent;
+  font-size: clamp(20px, 4vw, 28px);
+  filter: drop-shadow(0 2px 2px #0006);
+}
+
+.decoration:hover {
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+.wish-marker {
+  position: absolute;
+  z-index: 8;
+  transform: translate(-50%, -50%);
+  width: 34px;
+  height: 40px;
+  border: 2px solid #f8e4a5;
+  border-radius: 7px;
+  background: var(--red);
+  color: white;
+  font-size: 20px;
+  box-shadow: 0 3px 10px #0005;
+}
+
+.wish-marker:hover {
+  transform: translate(-50%, -50%) scale(1.12);
+}
+
+.hint {
+  color: #d4e2d6;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.status {
+  min-height: 20px;
+  color: var(--gold);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.ornaments {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 7px;
+}
+
+.ornament {
+  padding: 9px 2px;
+  border: 1px solid #ffffff25;
+  border-radius: 10px;
+  background: #ffffff0c;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.ornament.active {
+  border-color: var(--gold);
+  background: #f6d77a30;
+}
+
+.field { margin: 12px 0; }
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #ffffff30;
+  border-radius: 10px;
+  outline: none;
+  background: #0003;
+  color: white;
+  font: inherit;
+}
+
+input:focus, textarea:focus { border-color: var(--gold); }
+input::placeholder, textarea::placeholder { color: #c0cfc3; }
+textarea { min-height: 90px; resize: vertical; }
+
+.btn {
+  padding: 11px 13px;
+  border: 0;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.gold { background: var(--gold); color: #173629; }
+.plain { background: #ffffff13; border: 1px solid #ffffff30; color: white; }
+.red { background: var(--red); color: white; }
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.button-row .btn { flex: 1; }
+
+.wish-list {
+  display: grid;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.wish-card {
+  padding: 12px;
+  border: 1px solid #ffffff20;
+  border-radius: 11px;
+  background: #ffffff0c;
+  overflow-wrap: anywhere;
+}
+
+.wish-card strong { color: var(--gold); }
+.wish-card p { white-space: pre-wrap; line-height: 1.5; }
+
+.share-link {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px dashed #f6d77a88;
+  border-radius: 10px;
+  color: var(--gold);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.hidden { display: none !important; }
+
+/* Cửa sổ mở thiệp */
+.modal {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: #03120edb;
+}
+
+.modal-card {
+  position: relative;
+  width: min(430px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px 24px;
+  border: 2px solid #e9cb79;
+  border-radius: 20px;
+  background: linear-gradient(#fffdf3, #fff0d2);
+  color: #244633;
+  text-align: center;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.envelope { font-size: 48px; }
+
+.modal-label {
+  margin-top: 10px;
+  color: #a47c35;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.modal-card h2 {
+  margin-top: 18px;
+  color: #a3263b;
+  font-family: Georgia, serif;
+  overflow-wrap: anywhere;
+}
+
+.modal-message {
+  margin: 20px 0;
+  font-family: Georgia, serif;
+  font-size: 17px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.modal-from { line-height: 1.8; overflow-wrap: anywhere; }
+.modal-from strong, .merry { color: #a3263b; }
+.merry { margin-top: 20px; font-weight: bold; }
+
+.snow {
+  position: fixed;
+  z-index: 20;
+  top: -20px;
+  color: white;
+  opacity: .7;
+  pointer-events: none;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to { transform: translateY(110vh) rotate(360deg); }
+}
+
+footer {
+  padding: 25px 12px;
+  text-align: center;
+  color: #c8d9cb;
+  font-size: 12px;
+}
+
+@media (max-width: 760px) {
+  .layout { grid-template-columns: 1fr; }
+  .panel { padding: 14px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">SJC</div>
+  <h1>My Christmas Tree</h1>
+  <div class="subtitle">
+    Trang trí cây thông và gửi lời chúc yêu thương 🎄<br>
+    A little tree, a lot of love.
+  </div>
+</header>
+
+<main>
+  <div class="layout">
+    <section class="panel" style="text-align:center">
+      <h2 id="treeTitle">🎄 Cây thông của bạn</h2>
+
+      <div class="tree-wrap">
+        <div id="tree">
+          <div class="star">★</div>
+          <div class="layer layer1"></div>
+          <div class="layer layer2"></div>
+          <div class="layer layer3"></div>
+          <div class="trunk"></div>
+        </div>
+      </div>
+
+      <div class="hint">
+        Chọn đồ trang trí rồi chạm vào cây.<br>
+        Nhấn vào thiệp 💌 để đọc lời chúc.
+      </div>
+
+      <div class="status" id="status">Sẵn sàng tạo cây thông!</div>
+
+      <div class="button-row">
+        <button class="btn gold" id="newTree">＋ Tạo cây mới</button>
+        <button class="btn plain" id="copyLink">🔗 Sao chép link</button>
+      </div>
+
+      <div class="share-link" id="shareLink">
+        Link cây của bạn sẽ xuất hiện ở đây.
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>✨ Trang trí cây</h2>
+      <div class="ornaments" id="ornaments"></div>
+
+      <div class="button-row">
+        <button class="btn plain" id="undo">↶ Hoàn tác</button>
+        <button class="btn plain" id="clear">Xóa trang trí</button>
+      </div>
+
+      <h3>💌 Viết thiệp Giáng sinh</h3>
+      <form id="wishForm">
+        <div class="field">
+          <label for="sender">Tên người gửi</label>
+          <input id="sender" maxlength="60" placeholder="Tên của bạn" required>
+        </div>
+
+        <div class="field">
+          <label for="receiver">Tên người nhận</label>
+          <input id="receiver" maxlength="60" placeholder="Tên người nhận" required>
+        </div>
+
+        <div class="field">
+          <label for="message">Lời chúc</label>
+          <textarea id="message" maxlength="500"
+            placeholder="Chúc bạn một mùa Giáng sinh an lành..." required></textarea>
+        </div>
+
+        <button class="btn gold" type="submit" style="width:100%">
+          Treo thiệp lên cây 💖
+        </button>
+      </form>
+
+      <h3>🎁 Lời chúc trên cây</h3>
+      <div class="wish-list" id="wishList"></div>
+    </section>
+  </div>
+</main>
+
+<footer>Made with love · Christmas at SJC 🎄</footer>
+
+<div id="wishModal" class="modal hidden" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <button id="closeModal" class="close" aria-label="Đóng">✕</button>
+    <div class="envelope">💌</div>
+    <div class="modal-label">A CHRISTMAS WISH FOR YOU</div>
+    <h2 id="modalReceiver"></h2>
+    <div style="color:#c79c46">✦ ❄ ✦</div>
+    <p class="modal-message" id="modalMessage"></p>
+    <div class="modal-from">
+      With love,<br><strong id="modalSender"></strong>
+    </div>
+    <div class="merry">Merry Christmas 🎄</div>
+  </div>
+</div>
+
+<script>
+const ornaments = [
+  ["🔴", "Quả châu đỏ"], ["🟡", "Quả châu vàng"],
+  ["🔵", "Quả châu xanh"], ["🎀", "Nơ"],
+  ["🔔", "Chuông"], ["🍬", "Kẹo"],
+  ["❄️", "Bông tuyết"], ["❤️", "Trái tim"],
+  ["🎁", "Hộp quà"], ["🦌", "Tuần lộc"],
+  ["✨", "Lấp lánh"], ["🍭", "Kẹo mút"],
+  ["🧸", "Gấu bông"], ["⭐", "Ngôi sao"],
+  ["🪽", "Thiên thần"]
+];
+
+let selected = ornaments[0];
+let decorations = [];
+let wishes = [];
+let historyStack = [];
+let treeId = new URLSearchParams(location.search).get("tree");
+
+const $ = id => document.getElementById(id);
+
+function setStatus(text) {
+  $("status").textContent = text;
+}
+
+function storageKey() {
+  return "sjc_christmas_tree_" + (treeId || "default");
+}
+
+function saveTree() {
+  try {
+    localStorage.setItem(storageKey(), JSON.stringify({
+      decorations, wishes
+    }));
+    renderTree();
+    renderWishes();
+  } catch (error) {
+    console.error(error);
+    setStatus("Không lưu được dữ liệu trên trình duyệt.");
+  }
+}
+
+function loadTree() {
+  try {
+    const raw = localStorage.getItem(storageKey());
+    const data = raw ? JSON.parse(raw) : {};
+    decorations = Array.isArray(data.decorations) ? data.decorations : [];
+    wishes = Array.isArray(data.wishes) ? data.wishes : [];
+  } catch {
+    decorations = [];
+    wishes = [];
+  }
+
+  renderTree();
+  renderWishes();
+  updateShareLink();
+}
+
+function renderOrnaments() {
+  const container = $("ornaments");
+  container.replaceChildren();
+
+  ornaments.forEach(item => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "ornament" +
+      (selected[0] === item[0] ? " active" : "");
+    button.textContent = item[0];
+    button.title = item[1];
+
+    button.addEventListener("click", () => {
+      selected = item;
+      renderOrnaments();
+      setStatus("Đã chọn " + item[1] + ". Chạm vào cây để đặt.");
+    });
+
+    container.appendChild(button);
+  });
+}
+
+function renderTree() {
+  document.querySelectorAll(".decoration, .wish-marker")
+    .forEach(el => el.remove());
+
+  decorations.forEach((item, index) => {
+    const button = document.createElement("button");
+    button.className = "decoration";
+    button.textContent = item.emoji;
+    button.title = "Nhấn để gỡ " + item.name;
+    button.style.left = item.x + "%";
+    button.style.top = item.y + "%";
+
+    button.addEventListener("click", event => {
+      event.stopPropagation();
+      historyStack.push(JSON.stringify(decorations));
+      decorations.splice(index, 1);
+      saveTree();
+      setStatus("Đã gỡ đồ trang trí.");
+    });
+
+    $("tree").appendChild(button);
+  });
+
+  wishes.forEach((wish, index) => {
+    const button = document.createElement("button");
+    button.className = "wish-marker";
+    button.type = "button";
+    button.textContent = "💌";
+    button.title = "Đọc lời chúc của " + wish.sender;
+    button.style.left = wish.x + "%";
+    button.style.top = wish.y + "%";
+
+    button.addEventListener("click", event => {
+      event.stopPropagation();
+      openWish(wish);
+    });
+
+    $("tree").appendChild(button);
+  });
+}
+
+function renderWishes() {
+  const list = $("wishList");
+  list.replaceChildren();
+
+  if (!wishes.length) {
+    const empty = document.createElement("p");
+    empty.className = "hint";
+    empty.textContent = "Chưa có lời chúc nào. Hãy viết thiệp đầu tiên!";
+    list.appendChild(empty);
+    return;
+  }
+
+  [...wishes].reverse().forEach(wish => {
+    const card = document.createElement("article");
+    card.className = "wish-card";
+
+    const title = document.createElement("strong");
+    title.textContent = "💌 " + wish.sender + " gửi " + wish.receiver;
+
+    const message = document.createElement("p");
+    message.textContent = wish.message;
+
+    const button = document.createElement("button");
+    button.className = "btn plain";
+    button.textContent = "Đọc thiệp";
+    button.addEventListener("click", () => openWish(wish));
+
+    card.append(title, message, button);
+    list.appendChild(card);
+  });
+}
+
+function openWish(wish) {
+  $("modalReceiver").textContent = "Gửi " + wish.receiver;
+  $("modalMessage").textContent = wish.message;
+  $("modalSender").textContent = wish.sender;
+  $("wishModal").classList.remove("hidden");
+}
+
+function closeWish() {
+  $("wishModal").classList.add("hidden");
+}
+
+$("closeModal").addEventListener("click", closeWish);
+
+$("wishModal").addEventListener("click", event => {
+  if (event.target.id === "wishModal") closeWish();
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeWish();
+});
+
+$("tree").addEventListener("click", event => {
+  const rect = $("tree").getBoundingClientRect();
+  const x = (event.clientX - rect.left) / rect.width * 100;
+  const y = (event.clientY - rect.top) / rect.height * 100;
+
+  if (y < 12 || y > 82 || x < 12 || x > 88) {
+    setStatus("Hãy chọn vị trí trong tán cây nhé!");
+    return;
+  }
+
+  if (decorations.length >= 150) {
+    setStatus("Cây đã có tối đa 150 món trang trí.");
+    return;
+  }
+
+  historyStack.push(JSON.stringify(decorations));
+  decorations.push({
+    emoji: selected[0],
+    name: selected[1],
+    x: Math.round(x * 10) / 10,
+    y: Math.round(y * 10) / 10
+  });
+
+  saveTree();
+  setStatus("Đã thêm " + selected[1] + " vào cây!");
+});
+
+$("wishForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const sender = $("sender").value.trim();
+  const receiver = $("receiver").value.trim();
+  const message = $("message").value.trim();
+
+  if (!sender || !receiver || !message) return;
+
+  if (wishes.length >= 100) {
+    setStatus("Cây đã đạt giới hạn 100 lời chúc.");
+    return;
+  }
+
+  wishes.push({
+    sender,
+    receiver,
+    message,
+    x: Math.round((25 + Math.random() * 50) * 10) / 10,
+    y: Math.round((30 + Math.random() * 40) * 10) / 10,
+    createdAt: new Date().toISOString()
+  });
+
+  saveTree();
+  $("wishForm").reset();
+  setStatus("Thiệp đã được treo lên cây! Nhấn 💌 để đọc.");
+});
+
+$("undo").addEventListener("click", () => {
+  if (!historyStack.length) {
+    setStatus("Không có thao tác nào để hoàn tác.");
+    return;
+  }
+
+  decorations = JSON.parse(historyStack.pop());
+  saveTree();
+  setStatus("Đã hoàn tác đồ trang trí.");
+});
+
+$("clear").addEventListener("click", () => {
+  if (!confirm("Xóa toàn bộ đồ trang trí trên cây?")) return;
+
+  historyStack.push(JSON.stringify(decorations));
+  decorations = [];
+  saveTree();
+  setStatus("Đã xóa đồ trang trí.");
+});
+
+function updateShareLink() {
+  if (!treeId) {
+    $("shareLink").textContent =
+      "Tạo cây mới để có mã cây riêng.";
+    return;
+  }
+
+  $("shareLink").textContent = new URL(location.href).href;
+}
+
+$("newTree").addEventListener("click", () => {
+  treeId = (crypto.randomUUID
+    ? crypto.randomUUID().replaceAll("-", "").slice(0, 12)
+    : Math.random().toString(36).slice(2, 14));
+
+  const url = new URL(location.href);
+  url.searchParams.set("tree", treeId);
+  history.pushState({}, "", url);
+
+  decorations = [];
+  wishes = [];
+  historyStack = [];
+
+  saveTree();
+  updateShareLink();
+  $("treeTitle").textContent = "🎄 Cây thông của bạn";
+  setStatus("Đã tạo cây mới trên trình duyệt này.");
+});
+
+$("copyLink").addEventListener("click", async () => {
+  if (!treeId) {
+    setStatus("Hãy tạo cây mới trước.");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(new URL(location.href).href);
+    setStatus("Đã sao chép link!");
+  } catch {
+    window.prompt("Sao chép link này:", new URL(location.href).href);
+  }
+});
+
+function startSnow() {
+  for (let i = 0; i < 25; i++) {
+    const snow = document.createElement("div");
+    snow.className = "snow";
+    snow.textContent = Math.random() > .5 ? "❄" : "✦";
+    snow.style.left = Math.random() * 100 + "vw";
+    snow.style.fontSize = (8 + Math.random() * 12) + "px";
+    snow.style.animationDuration = (7 + Math.random() * 12) + "s";
+    snow.style.animationDelay = (-Math.random() * 15) + "s";
+    document.body.appendChild(snow);
+  }
+}
+
+renderOrnaments();
+loadTree();
+startSnow();
+
+if (treeId) {
+  $("treeTitle").textContent = "🎄 Cây thông của bạn";
+}
+</script>
+</body>
+</html>
